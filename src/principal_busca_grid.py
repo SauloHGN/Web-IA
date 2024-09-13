@@ -1,3 +1,14 @@
+import sys
+import os
+
+# Adiciona o diretório 'src' ao sys.path se não estiver lá
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+src_dir = os.path.join(parent_dir, 'src')
+
+if src_dir not in sys.path:
+    sys.path.append(src_dir)
+
 import funcoes_auxiliares as fa
 import funcoes_principais as mainFunc
 from sys import exit
@@ -5,17 +16,17 @@ from sys import exit
 sol = mainFunc.busca()
 caminho = []
 
+imagens = {
+    0: 'chao.png',
+    1: 'destino.png',
+    9: 'obstaculo.png',
+    7: 'origem.png'
+}
+
 # Busca em Grid
-n = 30
-m = 30
-qt_ob = 8
-if qt_ob>n*m:
-    print("Erro!")
-    exit()
-else:
-    for i in range(n):
-        mapa = [[0 for _ in range(m)] for _ in range(n)]
-        print(mapa[i])
+n = 20
+m = 40
+qt_ob = 10
 
 """
 origem = []
@@ -28,7 +39,19 @@ destino.append(int(input("X = ")))
 destino.append(int(input("Y = ")))
 """
 origem = [3,2]
-destino = [5,2]
+destino = [0,0]
+
+
+if qt_ob>n*m:
+    print("Erro!")
+    exit()
+else:
+    mapa = fa.Gera_Problema_Grid(n,m,qt_ob)
+    mapa[destino[0], destino[1]] = 1
+    for i in range(n):
+        print(mapa[i])
+
+
 print(origem,destino)
 
 # Pontos fora dos limites

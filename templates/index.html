@@ -1,5 +1,54 @@
 <!DOCTYPE html>
 <html>
+  <style>
+    body {
+      display: flex;
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      align-items: center;
+      background-color: black;
+    }
+    #mapa {
+      display: grid;
+
+      grid-template-columns: repeat(40, auto);
+      grid-template-rows: repeat(20, auto);
+      grid-gap: 0;
+    }
+    #mapa .tile {
+      width: 0;
+      height: 0;
+    }
+
+    .container-map {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <script>
+    function ResizeGrid() {
+      const grid = document.getElementById("mapa");
+
+      let tamWidth = window.innerWidth / 35;
+      let tamHeight = window.innerHeight / 35;
+
+      let trueWidth = tamWidth / 2;
+      let trueHeight = tamHeight / 2;
+
+      const cells = document.querySelectorAll("#mapa .tile");
+      cells.forEach((cell) => {
+        cell.style.width = `${trueWidth}px`;
+        cell.style.height = `${trueWidth}px`;
+      });
+    }
+    window.addEventListener("load", ResizeGrid);
+    window.addEventListener("resize", ResizeGrid);
+  </script>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +58,15 @@
       href="{{ url_for('static', filename='index.css') }}" />
   </head>
   <body>
-    <h1>Teste</h1>
+    <section class="formulario"></section>
+    <section class="container-map">
+      <div id="mapa">
+        {% for row in matriz %} {% for cell in row %}
+        <img
+          src="{{ url_for('static', filename=imagens[cell]) }}"
+          class="tile" />
+        {% endfor %} {% endfor %}
+      </div>
+    </section>
   </body>
 </html>
