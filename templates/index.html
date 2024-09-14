@@ -11,7 +11,7 @@
     }
     #mapa {
       display: grid;
-
+      position: relative;
       grid-template-columns: repeat(40, auto);
       grid-template-rows: repeat(20, auto);
       grid-gap: 0;
@@ -28,14 +28,58 @@
       width: 100%;
       height: 100%;
     }
+
+    .formulario {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      width: 250px;
+      padding: 0 20px;
+      height: 100%;
+      gap: 10px;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 10px 0;
+      gap: 10px;
+    }
+
+    input {
+      height: 28px;
+      width: 200px;
+      border-radius: 4px;
+      padding: 0 8px;
+    }
+
+    input:focus {
+      outline: none;
+    }
+    label {
+      color: aliceblue;
+    }
+
+    select {
+      height: 28px;
+      border-radius: 4px;
+    }
+
+    input[type="submit"] {
+      width: 100px;
+      height: 28px;
+    }
   </style>
 
-  <script>
+  <script type="application/javascript">
     function ResizeGrid() {
       const grid = document.getElementById("mapa");
 
-      let tamWidth = window.innerWidth / 35;
-      let tamHeight = window.innerHeight / 35;
+      let tamWidth = window.innerWidth / 26;
+      let tamHeight = window.innerHeight / 26;
 
       let trueWidth = tamWidth / 2;
       let trueHeight = tamHeight / 2;
@@ -48,6 +92,16 @@
     }
     window.addEventListener("load", ResizeGrid);
     window.addEventListener("resize", ResizeGrid);
+
+    // correção do F5
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "F5" || event.keyCode === 116) {
+        event.preventDefault();
+        caminho = [];
+        mapa = [];
+        window.location.href = "/";
+      }
+    });
   </script>
   <head>
     <meta charset="UTF-8" />
@@ -58,8 +112,64 @@
       href="{{ url_for('static', filename='index.css') }}" />
   </head>
   <body>
-    <section class="formulario"></section>
+    <section class="formulario">
+      <form method="POST" action="/">
+        <input
+          type="number"
+          id="origem_x"
+          name="origem_x"
+          placeholder="Origem X"
+          required />
+        <input
+          type="number"
+          id="origem_y"
+          name="origem_y"
+          placeholder="Origem Y"
+          required />
+        <br />
+
+        <input
+          type="number"
+          id="destino_x"
+          name="destino_x"
+          placeholder="Destino X"
+          required />
+        <input
+          type="number"
+          id="destino_y"
+          name="destino_y"
+          placeholder="Destino Y"
+          required />
+        <br />
+
+        <input type="hidden" name="form_type" value="draw-map" />
+        <input type="submit" value="Gerar Mapa" />
+      </form>
+
+      <form method="POST" action="/">
+        <label for="algoritmo">Algoritmo:</label>
+        <select id="algoritmo" name="algoritmo">
+          <option value="amplitude">Amplitude</option>
+          <option value="profundidade">Profundidade</option>
+          <option value="prof_limitada">Profundidade Limitada</option>
+          <option value="aprof_iterativo">Aprofundamento Iterativo</option>
+          <option value="bidirecional">Bidirecional</option>
+        </select>
+        <br />
+
+        <input type="hidden" name="form_type" value="run_algorithm" />
+        <input type="submit" value="Iniciar rota" />
+      </form>
+      {% if algoritmo %}
+      <div class="Valores" style="width: 250px">
+        <p style="color: #fefefe">Algoritmo: {{ algoritmo }}</p>
+        <p style="color: #fefefe">Caminho: {{ caminho }}</p>
+        <p style="color: #fefefe">Custo: {{ custo }}</p>
+      </div>
+      {% endif %}
+    </section>
     <section class="container-map">
+      {% if mostrar_mapa == True and caminho_encontrado == False %}
       <div id="mapa">
         {% for row in matriz %} {% for cell in row %}
         <img
@@ -67,6 +177,19 @@
           class="tile" />
         {% endfor %} {% endfor %}
       </div>
+      {% endif %}
+
+      <!--  MAPA COM CAMINHO -->
+
+      {% if mostrar_mapa == True and caminho_encontrado == True %}
+      <div id="mapa">
+        {% for row in matriz %} {% for cell in row %}
+        <img
+          src="{{ url_for('static', filename=imagens[cell]) }}"
+          class="tile" />
+        {% endfor %} {% endfor %}
+      </div>
+      {% endif %}
     </section>
   </body>
 </html>
