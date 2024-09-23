@@ -1,3 +1,4 @@
+import math
 import sys
 import os
 
@@ -19,7 +20,7 @@ def inicializarDados(origem,destino):
     # Busca em Grid
     n = 20
     m = 40
-    qt_ob = 10
+    qt_ob = 25
     # origem = [5,5]
     # destino = [0,0]
 
@@ -71,29 +72,32 @@ def execAlgoritmos(sol, n, m, mapa, origem, destino):
 
     caminho = sol.amplitude(origem,destino,mapa,n,m)
     print("\n============== AMPLITUDE ==============")
-    print("Caminho: ",caminho)
+    print("Caminho: \n",caminho)
     print("Custo:",len(caminho)-1)
 
     caminho = sol.profundidade(origem,destino,mapa,n,m)
     print("\n============== PROFUNDIDADE ==============")
-    print("Caminho: ",caminho)
+    print("Caminho: \n",caminho)
     print("Custo:",len(caminho)-1)
 
-    limite = 10
+    #limite = 10
+    limite = math.fabs(origem[0] - destino[0]) + math.fabs(origem[1] - destino[1])
+    
     caminho = sol.prof_limitada(origem,destino,mapa,n,m,limite)
     print("\n============== PROFUNDIDADE LIMITADA ==============")
-    print("Caminho: ",caminho)
+    print("Caminho: \n",caminho)
     print("Custo:",len(caminho)-1)
+    print("limite", limite)
 
     lim_max = 20
     caminho = sol.aprof_iterativo(origem,destino,mapa,n,m,lim_max)
     print("\n============== APROFUNDAMENTO ITERATIVO ==============")
-    print("Caminho: ",caminho)
+    print("Caminho: \n",caminho)
     print("Custo:",len(caminho)-1)
 
 
 
     caminho = sol.bidirecional(origem,destino,mapa,n,m)
     print("\n============== BIDIRECIONAL ==============")
-    print("Caminho: ",caminho)
+    print("Caminho: \n",caminho)
     print("Custo:",len(caminho)-1)

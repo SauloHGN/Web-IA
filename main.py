@@ -1,4 +1,5 @@
 import copy
+import math
 from flask import Flask, render_template, redirect, request, url_for
 from src.principal_busca_grid import imagens, inicializarDados
 
@@ -45,12 +46,13 @@ def index():
                 print("\n============== PROFUNDIDADE ==============")
 
             elif algoritmo == 'prof_limitada':
-                limite = 10
+                limite = math.fabs(origem[0] - destino[0]) + math.fabs(origem[1] - destino[1])
+                print("LIMITE", limite)
                 caminho = sol.prof_limitada(origem, destino, mapa, n, m, limite)
                 print("\n============== PROFUNDIDADE LIMITADA ==============")
 
             elif algoritmo == 'aprof_iterativo':
-                lim_max = 20
+                lim_max = math.ceil(math.fabs(origem[0] - destino[0]) + math.fabs(origem[1] - destino[1]))
                 caminho = sol.aprof_iterativo(origem, destino, mapa, n, m, lim_max)
                 print("\n============== APROFUNDAMENTO ITERATIVO ==============")
 
