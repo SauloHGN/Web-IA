@@ -10,12 +10,14 @@ def index():
     algoritmo = None
     if request.method == 'POST':
         form_type = request.form.get('form_type')
-        
 
         if form_type == 'draw-map':
             # Inicializar variáveis comuns para ambos os formulários
             origem = [int(request.form['origem_x']), int(request.form['origem_y'])]
             destino = [int(request.form['destino_x']), int(request.form['destino_y'])]
+
+            if origem == destino:
+                return "As coordenadas de origem e destino devem ser diferentes"
 
             sol, caminho, n, m, qt_ob, origem, destino, mapa  = inicializarDados(origem, destino)
 
@@ -33,6 +35,9 @@ def index():
             return render_template('index.html', matriz=mapa, imagens=imagens, caminho=caminho, custo=len(caminho)-1, mostrar_mapa=True, caminho_encontrado = False, algoritmo = algoritmo)
 
         elif form_type == 'run_algorithm':
+            if 'mapa_original' not in globals():
+                return "É necessario preencher os dados e gerar o mapa antes de executar o algoritmo."
+           
             algoritmo = request.form['algoritmo']
             mapa = copy.deepcopy(mapa_original)
 

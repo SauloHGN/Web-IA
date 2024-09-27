@@ -19,7 +19,7 @@ def inicializarDados(origem,destino):
     # Busca em Grid
     n = 20
     m = 40
-    qt_ob = 10
+    qt_ob = 15
     # origem = [5,5]
     # destino = [0,0]
 
