@@ -14,8 +14,10 @@ import funcoes_auxiliares as fa
 import funcoes_principais as mainFunc
 from sys import exit
 
+
 def inicializarDados(origem,destino):
-    sol = mainFunc.busca()
+    sol = mainFunc.busca() #funções principais
+
     caminho = []
     # Busca em Grid
     n = 20
@@ -57,7 +59,7 @@ destino.append(int(input("X = ")))
 destino.append(int(input("Y = ")))
 """
 
-
+'''
 def execAlgoritmos(sol, n, m, mapa, origem, destino):
 
     # Pontos fora dos limites
@@ -97,7 +99,10 @@ def execAlgoritmos(sol, n, m, mapa, origem, destino):
 
 
 
-    caminho = sol.bidirecional(origem,destino,mapa,n,m)
+    caminho = sol.bidirecional(origem, destino, mapa, n, m)
     print("\n============== BIDIRECIONAL ==============")
     print("Caminho: \n",caminho)
     print("Custo:",len(caminho)-1)
+
+
+    caminho = sol.custoUniforme()'''

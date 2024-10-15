@@ -1,4 +1,5 @@
 from node import No
+from node import NoPT2
 
 class lista(object):
     head = None
@@ -57,6 +58,30 @@ class lista(object):
             else:
                 self.head = None
             return no
+        
+
+#------------------------------------------------------------
+
+    # INSERE NO FIM DA LISTA
+    def insereUltimoPT2(self, s, v1, v2, p):
+
+        novo_no = NoPT2(p, s, v1, v2, None, None)
+
+        if self.head is None:
+            self.head = novo_no
+        else:
+            self.tail.proximo = novo_no
+            novo_no.anterior   = self.tail
+        self.tail = novo_no
+
+    def inserePrimeiroPT2(self, s, v1, v2, p):
+        novo_no = NoPT2(p, s, v1, v2, None, None)
+        if self.head == None:
+            self.tail = novo_no
+        else:
+            novo_no.proximo = self.head
+            self.head.anterior = novo_no
+        self.head = novo_no
 
     # RETORNA O PRIMEIRO DA LISTA
     def primeiro(self):
@@ -117,3 +142,51 @@ class lista(object):
                 atual = atual.pai
         caminho.append(atual.estado)
         return caminho
+    
+    def inserePos_X(self, s, v1, v2, p):
+        
+        # se lista estiver vazia
+        if self.head is None:
+            self.inserePrimeiroPT2(s,v1,v2,p)
+        else:
+            atual = self.head
+            while atual.valor1 < v1:
+                atual = atual.proximo
+                if atual is None: break
+            
+            if atual == self.head:
+                self.inserePrimeiroPT2(s,v1,v2,p)
+            else:
+                if atual is None:
+                    self.insereUltimoPT2(s,v1,v2,p)
+                else:
+                    novo_no = NoPT2(p,s,v1,v2,None,None)
+                    aux = atual.anterior
+                    aux.proximo = novo_no
+                    novo_no.anterior = aux
+                    atual.anterior = novo_no
+                    novo_no.proximo = atual
+
+    def exibeArvore(self):
+            
+            atual = self.tail
+            caminho = []
+            while atual.pai is not None:
+                caminho.append(atual.estado)
+                atual = atual.pai
+            caminho.append(atual.estado)
+            return caminho
+
+    def exibeArvore2(self, s, v1):
+            
+            atual = self.tail
+            
+            while atual.estado != s or atual.valor1 != v1:
+                atual = atual.anterior
+            
+            caminho = []
+            while atual.pai is not None:
+                caminho.append(atual.estado)
+                atual = atual.pai
+            caminho.append(atual.estado)
+            return caminho

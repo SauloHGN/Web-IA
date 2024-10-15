@@ -144,3 +144,20 @@ def sucessor_grid(x,y,dx,dy,mapa):
             f.append(linha)
     
     return f
+
+def h(p1,p2):
+    if p1[0]<p2[0]:
+        m1 = 3 # valor do custo da rotina sucessores para esta acao
+    else:
+        m1 = 2 # valor do custo da rotina sucessores para esta acao
+    
+    if p1[1]<p2[1]:
+        m2 = 1 # valor do custo da rotina sucessores para esta acao
+    else:
+        m2 = 4 # valor do custo da rotina sucessores para esta acao
+    
+    # heurística SEM movimento em diagonal
+    h = abs(p1[0]-p2[0])*m1 + abs(p1[1]-p2[1])*m2
+    # heurística COM movimento em diagonal
+    #h = sqrt((p1[0]-p2[0])*(p1[0]-p2[0]) + (p1[1]-p2[1])*(p1[1]-p2[1]))
+    return h

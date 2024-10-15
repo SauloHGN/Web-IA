@@ -7,11 +7,11 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global sol, caminho, n, m, qt_ob, origem, destino, mapa, mapa_original, algoritmo
+    global sol, caminho, n, m, qt_ob, origem, destino, mapa, mapa_original, algoritmo, sol2
     algoritmo = None
     if request.method == 'POST':
         form_type = request.form.get('form_type')
-
+        
         if form_type == 'draw-map':
             # Inicializar variáveis comuns para ambos os formulários
             origem = [int(request.form['origem_x']), int(request.form['origem_y'])]
@@ -32,6 +32,7 @@ def index():
 
             if mapa[origem[0]][origem[1]] == 9 or mapa[destino[0]][destino[1]] == 9:
                 return "Origem ou destino é igual a obstáculo", 400
+            
 
             return render_template('index.html', matriz=mapa, imagens=imagens, caminho=caminho, custo=len(caminho)-1, mostrar_mapa=True, caminho_encontrado = False, algoritmo = algoritmo)
 
@@ -65,6 +66,35 @@ def index():
                 caminho = sol.bidirecional(origem, destino, mapa, n, m)
                 print("\n============== BIDIRECIONAL ==============")
 
+            
+             #----------------- Algoritmos parte 2 ------------------
+            elif algoritmo == 'custoUniforme':
+                caminho = sol.custo_uniforme(origem, destino, mapa, n, m)
+                print("\n============= CUSTO UNIFORME ==============")
+                print("Caminho: \n",caminho)
+                print("Custo:",len(caminho)-1)
+
+            elif algoritmo == 'greedy':
+                caminho = sol.greedy(origem, destino, mapa, n, m)
+                print("\n================ GREEDY =================")
+                print("Caminho: \n",caminho)
+                print("Custo:",len(caminho)-1)
+
+            elif algoritmo == 'aEstrela':
+                caminho = sol.a_estrela(origem, destino, mapa, n, m)
+                print("\n============== A ESTRELA ===============")
+                print("Caminho: \n",caminho)
+                print("Custo:",len(caminho)-1)
+
+
+            elif algoritmo == 'aia_estrela':
+                lim_max = math.ceil(math.fabs(origem[0] - destino[0]) + math.fabs(origem[1] - destino[1]))
+                caminho = sol.aia_estrela(origem, destino, mapa, n, m, lim_max)
+                print("\n============= AIA ESTRELA ==============")
+                print("Caminho: \n",caminho)
+                print("Custo:",len(caminho)-1)
+
+
             else:
                 return "Algoritmo desconhecido", 400
 
@@ -83,7 +113,8 @@ def index():
 
 def updateMap(mapa, caminho):
     mapaAtualizado = mapa
-
+    if(caminho == 'Caminho não encontrado'):
+        return 'OPs...'
     if len(caminho) > 2:
         for coordenada in caminho[1:-1]:
             x, y = coordenada
