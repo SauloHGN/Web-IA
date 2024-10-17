@@ -8,28 +8,28 @@ def sucessores(atual,mapa,dim_x,dim_y):
     y = atual[1]
     
     if y+1!=dim_y:
-        if mapa[x][y+1]==0:
+        if mapa[x][y+1]!=9:
             linha = []
             linha.append(x)
             linha.append(y+1)
             f.append(linha)
             
     if x+1!=dim_x:
-        if mapa[x+1][y]==0:
+        if mapa[x+1][y]!=9:
             linha = []
             linha.append(x+1)
             linha.append(y)
             f.append(linha)
     
     if x-1>=0:
-        if mapa[x-1][y]==0:
+        if mapa[x-1][y]!=9:
             linha = []
             linha.append(x-1)
             linha.append(y)
             f.append(linha)
     
     if y-1>=0:
-        if mapa[x][y-1]==0:
+        if mapa[x][y-1]!=9:
             linha = []
             linha.append(x)
             linha.append(y-1)

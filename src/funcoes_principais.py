@@ -259,6 +259,8 @@ class busca(object):
         l2 = lista()
         caminho = []
         visitado = []
+        print("inicio: ",inicio)
+        print("fim: ",fim)
         l1.insereUltimoPT2(inicio,0,0,None)
         l2.insereUltimoPT2(inicio,0,0,None)
         linha = []
@@ -269,42 +271,43 @@ class busca(object):
         
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
-            
-        if atual.estado == fim:
-            #caminho = []
-            caminho = l2.exibeArvore2(atual.estado,atual.valor1)
-            #print("Cópia da árvore:\n",l2.exibeLista())
-            #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-            return caminho, atual.valor2
+            print("atual: ", atual.estado)
+            if atual.estado == fim:
+                #caminho = []
+                caminho = l2.exibeArvore2(atual.estado,atual.valor1)
+                #print("Cópia da árvore:\n",l2.exibeLista())
+                #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
+                return caminho, atual.valor2
 
         
-        filhos = fa.sucessores(atual.estado,mapa,dim_x,dim_y)
-            #print(filhos)
-        for novo in filhos:
+            filhos = fa.sucessores(atual.estado,mapa,dim_x,dim_y)
+            
+            #print("Novo: ",filhos)
+            for novo in filhos:
 
-            valor = [novo[0], novo[1]]
-            v2 = atual.valor2 + novo[1]  # custo do caminho
-            v1 = v2  # f1(n)
+                valor = [novo[0], novo[1]]
+                v2 = atual.valor2 + novo[1]  # custo do caminho
+                v1 = v2  # f1(n)
 
-            flag1 = True
-            flag2 = True
-            for j in range(len(visitado)):
-                if visitado[j][0] == valor:
-                    if visitado[j][1] <= v2:
-                        flag1 = False
-                    else:
-                        visitado[j][1] = v2
-                        flag2 = False
-                    break
+                flag1 = True
+                flag2 = True
+                for j in range(len(visitado)):
+                    if visitado[j][0] == valor:
+                        if visitado[j][1] <= v2:
+                            flag1 = False
+                        else:
+                            visitado[j][1] = v2
+                            flag2 = False
+                        break
 
-            if flag1:
-                l1.inserePos_X(valor, v1, v2, atual)
-                l2.insereUltimoPT2(valor, v1, v2, atual)
-                if flag2:
-                    linha = []
-                    linha.append(valor)
-                    linha.append(v2)
-                    visitado.append(linha)
+                if flag1:
+                    l1.inserePos_X(valor, v1, v2, atual)
+                    l2.insereUltimoPT2(valor, v1, v2, atual)
+                    if flag2:
+                        linha = []
+                        linha.append(valor)
+                        linha.append(v2)
+                        visitado.append(linha)
 
         return "Caminho não encontrado"
     
@@ -441,8 +444,7 @@ class busca(object):
                     return caminho, atual.valor2
             
                 filhos = fa.sucessores(atual.estado,mapa,dim_x,dim_y)
-                #print(filhos)
-
+                
                 for novo in filhos:
                     valor = []
                     valor.append(novo[0])
@@ -450,7 +452,6 @@ class busca(object):
                     # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
                     v2 = atual.valor2 + novo[1]  # custo do caminho
                     v1 = v2 + fa.h(valor,fim) # f3(n)
-
                     if v1<=limite:
                         flag1 = True
                         flag2 = True
@@ -465,7 +466,7 @@ class busca(object):
         
                         if flag1:
                             l1.inserePos_X(valor, v1, v2, atual)
-                            l2.inserePos_X(valor, v1, v2, atual)
+                            l2.insereUltimoPT2(valor, v1, v2, atual)
                             if flag2:
                                 linha = []
                                 linha.append(valor)
@@ -473,9 +474,9 @@ class busca(object):
                                 visitado.append(linha)
                     else:
                         lim_exc.append(v1)
-            limite = sum(lim_exc)/len(lim_exc)
+            limite = float(sum(lim_exc)/len(lim_exc))
+        return "Caminho não encontrado"
 
-            return "Caminho não encontrado"
 
     
     # BUSCA BIDIRECIONAL
