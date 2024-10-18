@@ -175,11 +175,22 @@
       {% if algoritmo %}
       <div class="Valores" style="width: 200px">
         <p style="color: #fefefe">Algoritmo: {{ algoritmo }}</p>
-        <p style="color: #fefefe">Caminho: <br>{{ caminho }}</p>
+        <p style="color: #fefefe">Caminho: <br />{{ caminho }}</p>
         <p style="color: #fefefe">Custo: {{ custo }}</p>
       </div>
       {% endif %}
     </section>
+
+    <script>
+      //alterar a opção do select
+      const valorSelecionado = "{{algoritmo}}";
+      console.log(valorSelecionado);
+      if (valorSelecionado != null && valorSelecionado != "None") {
+        const select = document.getElementById("algoritmo");
+        select.value = valorSelecionado;
+      }
+    </script>
+
     <section class="container-map">
       {% if mostrar_mapa == True and caminho_encontrado == False %}
       <div id="mapa">

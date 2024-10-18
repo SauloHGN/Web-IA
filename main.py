@@ -91,7 +91,7 @@ def index():
                 lim_max = math.ceil(math.fabs(origem[0] - destino[0]) + math.fabs(origem[1] - destino[1]))
                 caminho = sol.aia_estrela(origem, destino, mapa, n, m, lim_max)
                 print("\n============= AIA ESTRELA ==============")
-                print("Caminho: \n",caminho)
+                print("Caminho: \n",caminho[0])
                 print("Custo:",len(caminho)-1)
 
 
